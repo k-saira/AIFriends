@@ -1,2 +1,2 @@
 # AIFriends
-4.16 first test
+首次尝试学习前后端。
