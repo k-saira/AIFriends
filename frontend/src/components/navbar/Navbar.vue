@@ -19,36 +19,36 @@ const isCollapsed = ref(false)
     >
       <ul class="menu w-full p-2 gap-2">
         <li>
-          <button
+          <RouterLink :to="{name: 'homepage-index'}" active-class="menu-focus"
             class="flex items-center py-3"
             :class="isCollapsed ? 'justify-center tooltip tooltip-right' : ''"
             :data-tip="isCollapsed ? '首页' : null"
           >
             <HomepageIcon/>
             <span v-if="!isCollapsed" class="ml-2 transition-opacity whitespace-nowrap">首页</span>
-          </button>
+          </RouterLink>
         </li>
 
         <li>
-          <button
+          <RouterLink :to="{name: 'friend-index'}" active-class="menu-focus"
             class="flex items-center py-3"
             :class="isCollapsed ? 'justify-center tooltip tooltip-right' : ''"
             :data-tip="isCollapsed ? '好友' : null"
           >
             <FriendIcon/>
             <span v-if="!isCollapsed" class="ml-2 transition-opacity whitespace-nowrap">好友</span>
-          </button>
+          </RouterLink>
         </li>
 
         <li>
-          <button
+          <RouterLink :to="{name: 'create-index'}" active-class="menu-focus"
             class="flex items-center py-3"
             :class="isCollapsed ? 'justify-center tooltip tooltip-right' : ''"
             :data-tip="isCollapsed ? '创作' : null"
           >
             <CreateIcon/>
             <span v-if="!isCollapsed" class="ml-2 transition-opacity whitespace-nowrap">创作</span>
-          </button>
+          </RouterLink>
         </li>
 
       </ul>
@@ -77,9 +77,9 @@ const isCollapsed = ref(false)
           </div>
         </div>
         <div class="navbar-end">
-          <button class="btn btn-ghost text-lg">
+          <RouterLink :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg">
             登录
-          </button>
+          </RouterLink>
         </div>
 
       </nav>
