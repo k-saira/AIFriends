@@ -5,6 +5,10 @@ import HomepageIcon from "@/components/icons/HomepageIcon.vue";
 import FriendIcon from "@/components/icons/FriendIcon.vue";
 import CreateIcon from "@/components/icons/CreateIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
+import {useUserStore} from "@/stores/user.js";
+import UserMenu from "@/components/navbar/UserMenu.vue";
+
+const user = useUserStore()
 
 // 使用 Vue 变量控制开关状态，而不是依赖纯 CSS 的 checkbox 选中
 const isCollapsed = ref(false)
@@ -77,9 +81,14 @@ const isCollapsed = ref(false)
           </div>
         </div>
         <div class="navbar-end">
-          <RouterLink :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg">
+          <RouterLink v-if="user.isLogin()" :to="{name: 'create-index'}" class="btn btn-ghost text-base mr-6">
+            <CreateIcon />
+              创作
+          </RouterLink>
+          <RouterLink v-if="!user.isLogin()" :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg">
             登录
           </RouterLink>
+          <UserMenu v-else-if="user.isLogin()" />
         </div>
 
       </nav>
