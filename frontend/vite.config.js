@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
+import * as path from "node:path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -19,5 +20,9 @@ export default defineConfig({
   },
   server: {
     https: false
-  }
+  },
+  build: {
+    outDir: path.resolve(__dirname, '../backend/static/frontend'), // 打包到 Django static
+    emptyOutDir: true,
+  },
 })
