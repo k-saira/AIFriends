@@ -6,7 +6,7 @@ export const useUserStore = defineStore('user', () =>{
     const username = ref('')
     const photo = ref('')
     const profile = ref('')
-    const accessToken = ref('')
+    const accessToken = ref(localStorage.getItem('access_token') || '')
     const hasPulleduserInfo = ref(false)
 
     function isLogin () {
@@ -15,6 +15,7 @@ export const useUserStore = defineStore('user', () =>{
 
     function setAccessToken (token) {
         accessToken.value = token
+        localStorage.setItem('access_token', token)
     }
     function setUserInfo(data) {
         id.value = data.user_id
@@ -29,6 +30,7 @@ export const useUserStore = defineStore('user', () =>{
         photo.value = ''
         profile.value = ''
         accessToken.value = ''
+        localStorage.removeItem('access_token')
     }
 
     function setHasPulledInfo (newStatus) {

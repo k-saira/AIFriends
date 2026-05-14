@@ -18,7 +18,6 @@ onMounted(async () => {
       user.setUserInfo(data)
     }
   } catch (error) {
-    console.log(error)
   } finally {
     user.setHasPulledInfo(true)
     if (route.meta.needLogin && !user.isLogin()) {

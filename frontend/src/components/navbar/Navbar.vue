@@ -85,7 +85,7 @@ const isCollapsed = ref(false)
             <CreateIcon />
               创作
           </RouterLink>
-          <RouterLink v-if="!user.isLogin()" :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg">
+          <RouterLink v-if="user.hasPulleduserInfo && !user.isLogin()" :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg">
             登录
           </RouterLink>
           <UserMenu v-else-if="user.isLogin()" />
