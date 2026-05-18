@@ -1,5 +1,5 @@
 from django.contrib.auth.models import  User
-from django.template.defaulttags import now
+from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -33,7 +33,7 @@ class UpdateProfileView(APIView):
                 remove_old_photos(user_profile.photo)
                 user_profile.photo = photo
             user_profile.profile = profile
-            user_profile.updata_time = now()
+            user_profile.update_time = now()
             user_profile.save()
             user.username = username
             user.save()
