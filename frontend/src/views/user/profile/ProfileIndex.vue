@@ -43,7 +43,6 @@ async function handleUpdate() {
         errorMessage.value = data.result
       }
   } catch (error) {
-      console.log(error)
     }
   }
 
