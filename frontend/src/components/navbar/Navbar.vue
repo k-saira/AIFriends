@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import {ref, watch} from 'vue'
 import MenuIcon from "@/components/icons/MenuIcon.vue";
 import HomepageIcon from "@/components/icons/HomepageIcon.vue";
 import FriendIcon from "@/components/icons/FriendIcon.vue";
@@ -7,11 +7,28 @@ import CreateIcon from "@/components/icons/CreateIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import {useUserStore} from "@/stores/user.js";
 import UserMenu from "@/components/navbar/UserMenu.vue";
+import {useRoute, useRouter} from "vue-router";
 
 const user = useUserStore()
-
+const searchQuery = ref('')
 // 使用 Vue 变量控制开关状态，而不是依赖纯 CSS 的 checkbox 选中
 const isCollapsed = ref(false)
+const router = useRouter()
+const route = useRoute()
+
+
+watch(() => route.query.q, newQuery => {
+  searchQuery.value = newQuery || ''
+})
+
+function handleSearch() {
+  router.push({
+    name: 'homepage-index',
+    query: {
+      q: searchQuery.value.trim(),
+    }
+  })
+}
 </script>
 
 <template>
@@ -72,13 +89,13 @@ const isCollapsed = ref(false)
           <div class="flex-1 px-2 font-bold text-lg">AIFriends</div>
         </div>
         <div class="navbar-center w-4/5 max-w-180 flex justify-center">
-          <div class="join w-4/5">
-            <input class="input join-item rounded-l-full w-4/5" placeholder="搜索你感兴趣的内容" />
+          <form @submit.prevent="handleSearch" class="join w-4/5">
+            <input v-model="searchQuery" class="input join-item rounded-l-full w-4/5" placeholder="搜索你感兴趣的内容" />
             <button class="btn join-item rounded-r-full gap-0!">
               <SearchIcon/>
               搜索
             </button>
-          </div>
+          </form>
         </div>
         <div class="navbar-end">
           <RouterLink v-if="user.isLogin()" :to="{name: 'create-index'}" class="btn btn-ghost text-base mr-6">
