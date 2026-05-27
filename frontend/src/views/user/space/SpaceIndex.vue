@@ -1,9 +1,10 @@
 <script setup>
 import UserInfoField from "@/views/user/space/components/UserInfoField.vue";
-import {nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef} from "vue";
+import {nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch} from "vue";
 import api from "@/js/http/api.js";
 import {useRoute} from "vue-router";
 import Character from "@/components/character/character.vue";
+import loading from "daisyui/components/loading/index.js";
 
 
 const userProfile = ref(null)
@@ -21,6 +22,17 @@ function checkSentinelVisible() {  // 判断哨兵是否能被看到
   return rect.top < window.innerHeight && rect.bottom > 0
 }
 
+function reset() {
+  userProfile.value = null
+  characters.value = null
+  isloading.value = false
+  hasCharacters.value = false
+  loadMore()
+}
+
+watch(() => route.params.user_id, () => {
+  reset()
+})
 
 async function loadMore() {
   if (isloading.value || !hasCharacters.value) return
