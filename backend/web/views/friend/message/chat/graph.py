@@ -13,7 +13,13 @@ class ChatGraph:
         llm = ChatOpenAI(
             model='deepseek-v4-pro',
             openai_api_key=os.getenv('API_KEY'),
-            openai_api_base=os.getenv('api_base'),
+            openai_api_base=os.getenv('API_BASE'),
+            streaming=True, # 流式输出
+            model_kwargs = {
+                "stream_options": {
+                    "include_usage": True,  # 输出token消耗数量
+                }
+            }
         )
 
         class AgentState(TypedDict):
@@ -28,4 +34,4 @@ class ChatGraph:
         graph.add_edge(START, 'agent')
         graph.add_edge('agent', END)
 
-        return graph.compiled()
+        return graph.compile()
