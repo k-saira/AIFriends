@@ -3,7 +3,7 @@ import Message from "@/components/character/chat_field/chat_history/message/Mess
 import {nextTick, onBeforeUnmount, onMounted, useTemplateRef} from "vue";
 import api from "@/js/http/api.js";
 
-const props = defineProps(["history", "friendId", "character"]);
+const props = defineProps(["history", "friendId", "character", "isExpanded"]);
 const emit = defineEmits(['pushFrontMessage']);
 const scrollRef = useTemplateRef('scroll-ref')
 let isLoading = false
@@ -102,7 +102,10 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="scroll-ref" class="absolute top-18 left-0 w-90 h-142 overflow-y-scroll no-scrollbar">
+  <div ref="scroll-ref" class="absolute overflow-y-scroll no-scrollbar"
+       :class="props.isExpanded
+         ? 'top-18 left-2 right-2 h-[calc(90vh-10rem)]'
+         : 'top-18 left-0 w-90 h-142'">
     <div ref="sentinel-ref" class="h-2 ">
 
     </div>
@@ -111,6 +114,7 @@ defineExpose({
       :key="message.id"
       :message="message"
       :character="character"
+      :isExpanded="props.isExpanded"
     />
   </div>
 

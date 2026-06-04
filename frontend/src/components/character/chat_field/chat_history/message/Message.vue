@@ -1,7 +1,7 @@
 <script setup>
 import {useUserStore} from "@/stores/user.js";
 
-defineProps(["message", "character"]);
+defineProps(["message", "character", "isExpanded"]);
 
 const user = useUserStore()
 </script>
@@ -14,7 +14,7 @@ const user = useUserStore()
           <img :src="character.photo" alt=""/>
         </div>
       </div>
-      <div class="chat-bubble whitespace-pre-wrap break-all">{{message.content}}</div>
+      <div class="chat-bubble whitespace-pre-wrap break-all" :class="{ 'max-w-[55%]': isExpanded }">{{message.content}}</div>
     </div>
     <div v-else class="chat chat-end">
       <div class="chat-image avatar">

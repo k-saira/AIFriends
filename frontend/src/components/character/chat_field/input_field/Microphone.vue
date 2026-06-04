@@ -1,11 +1,13 @@
 <script setup>
 import KeyboardIcon from "@/components/character/icons/KeyboardIcon.vue";
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import {MicVAD} from "@ricky0123/vad-web";
 import api from "@/js/http/api.js";
 
+const props = defineProps(['isExpanded'])
 const emit = defineEmits(['close','send','stop'])
 const isSpeaking = ref(false)
+const barCount = computed(() => props.isExpanded ? 80 : 32)
 
 let vadInstance = null;
 
@@ -78,10 +80,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="absolute bottom-4 left-2 h-12 w-86 flex items-center bg-black/30  bbackdrop-blur-sm rounded-2xl">
+  <div class="absolute bottom-4 left-2 h-12 flex items-center bg-black/30 bbackdrop-blur-sm rounded-2xl"
+       :class="props.isExpanded ? 'right-4' : 'w-86'">
     <div v-if="isSpeaking" class="flex items-center justify-center gap-1 h-6 flex-1">
       <div
-        v-for="i in 32" :key="i"
+        v-for="i in barCount" :key="i"
         class="w-0.5 bg-blue-400 rounded-full animate-wave"
         :style="{ animationDelay: `${i * 0.1}s` }"
       ></div>

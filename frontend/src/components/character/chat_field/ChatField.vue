@@ -9,6 +9,7 @@ const modalRef = useTemplateRef('modal-ref')
 const inputRef = useTemplateRef('input-ref')
 const history = ref([])
 const chatHistoryRef = useTemplateRef('chat-history-ref')
+const isExpanded = ref(false)
 
 async function showModal() {
   modalRef.value.showModal()
@@ -58,20 +59,25 @@ defineExpose({
 
 <template>
   <dialog ref = "modal-ref" class = "modal">
-    <div class="modal-box w-90 h-180" :style="modalStyle">
-      <button @click = "handleClose"   class="btn btn-sm btn-circle btn-ghost bg-transparent absolute right-1 top-1">✕</button>
+    <div class="modal-box transition-all duration-300" :class="isExpanded ? 'w-[90vw] h-[90vh] max-w-none' : 'w-90 h-180'" :style="modalStyle">
+      <button @click="handleClose" class="btn btn-sm btn-circle btn-ghost bg-transparent absolute right-1 top-1">✕</button>
+      <button @click="isExpanded = !isExpanded" class="btn btn-sm btn-circle btn-ghost bg-transparent absolute right-9 top-1 text-lg">
+        {{ isExpanded ? '⤡' : '⤢' }}
+      </button>
       <ChatHistory
           ref = "chat-history-ref"
           v-if="friend"
           :history = 'history'
           :friendId = 'friend.id'
           :character = 'friend.character'
+          :isExpanded = 'isExpanded'
           @pushFrontMessage="handlePushFrontMessage"
       />
       <InputField
           v-if="friend"
           ref="input-ref"
           :friendId="friend.id"
+          :isExpanded = 'isExpanded'
           @pushBackMessage="handlePushBackMessage"
           @addToLastMessage="handleAddToLastMessage"
       />

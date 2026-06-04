@@ -7,7 +7,7 @@ import streamApi from "@/js/http/streamApi.js";
 import Microphone from "@/components/character/chat_field/input_field/Microphone.vue";
 
 
-const props = defineProps(['friendId'])
+const props = defineProps(['friendId', 'isExpanded'])
 const emit = defineEmits(['pushBackMessage', 'addToLastMessage']);
 const inputref = useTemplateRef('input-ref')
 const message = ref('')
@@ -69,7 +69,8 @@ defineExpose({
 </script>
 
 <template>
-  <form v-if="!showMic" @submit.prevent="handleSend" class="absolute bottom-4 left-2 h-12 w-86 flex items-center" >
+  <form v-if="!showMic" @submit.prevent="handleSend" class="absolute bottom-4 left-2 h-12 flex items-center"
+        :class="props.isExpanded ? 'right-4' : 'w-86'" >
     <input class="input bg-black/30  bbackdrop-blur-sm text-white text-base w-full h-full rounded-2xl pr-20"
            type="text"
            placeholder="文本输入..."
@@ -85,6 +86,7 @@ defineExpose({
   </form>
   <Microphone
       v-else
+      :isExpanded="props.isExpanded"
       @close="showMic = false"
       @send = "handleSend"
       @stop = "handleStop"
