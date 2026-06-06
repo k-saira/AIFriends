@@ -47,7 +47,6 @@ function handleAddToLastMessage(delta) {
 }
 
 function handleClose() {
-  modalRef.value.close()
   inputRef.value.close()
 }
 
@@ -58,9 +57,9 @@ defineExpose({
 </script>
 
 <template>
-  <dialog ref = "modal-ref" class = "modal">
+  <dialog ref = "modal-ref" class = "modal" @close="handleClose">
     <div class="modal-box transition-all duration-300" :class="isExpanded ? 'w-[90vw] h-[90vh] max-w-none' : 'w-90 h-180'" :style="modalStyle">
-      <button @click="handleClose" class="btn btn-sm btn-circle btn-ghost bg-transparent absolute right-1 top-1">✕</button>
+      <button @click="modalRef.close()" class="btn btn-sm btn-circle btn-ghost bg-transparent absolute right-1 top-1">✕</button>
       <button @click="isExpanded = !isExpanded" class="btn btn-sm btn-circle btn-ghost bg-transparent absolute right-9 top-1 text-lg">
         {{ isExpanded ? '⤡' : '⤢' }}
       </button>
