@@ -86,7 +86,7 @@ function handleSearch() {
               <MenuIcon/>
             </button>
           </div>
-          <div class="flex-1 px-2 font-bold text-lg">AIFriends</div>
+          <div class="flex-1 px-2 font-bold text-lg">比比拉布聊天室</div>
         </div>
         <div class="navbar-center w-4/5 max-w-180 flex justify-center">
           <form @submit.prevent="handleSearch" class="join w-4/5">
