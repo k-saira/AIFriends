@@ -15,23 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('web.urls')),
+    # media 文件服务（生产环境也能用）
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
-# 仅限开发阶段使用。生产阶段需要在nginx里配置。
+# 仅限开发阶段使用
 if settings.DEBUG:
     urlpatterns += static(
         '/assets/',
         document_root=settings.BASE_DIR / 'static/frontend/assets'
-    )
-    urlpatterns += static(
-        '/media/',
-        document_root=settings.MEDIA_ROOT
     )

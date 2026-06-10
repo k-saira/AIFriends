@@ -43,5 +43,7 @@ urlpatterns = [
 
 
     path('', index),
-    re_path(r'^(?!media/|static/|assets/).*$', index)
+    # SPA 路由：/static/frontend/ 下的前端页面
+    re_path(r'^static/frontend/(?!assets/).*$', index),
+    re_path(r'^(?!media/|static/).*$', index)
 ]
