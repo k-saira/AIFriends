@@ -3,11 +3,12 @@ import Photo from "@/views/create/character/components/Photo.vue";
 import Name from "@/views/create/character/components/Name.vue";
 import Profile from "@/views/create/character/components/Profile.vue";
 import BackGroundImage from "@/views/create/character/components/BackGroundImage.vue";
-import {ref, useTemplateRef} from "vue";
+import {onMounted, ref, useTemplateRef} from "vue";
 import {base64ToFile} from "@/js/utils/base64_to_file.js";
 import api from "@/js/http/api.js";
 import {useRouter} from "vue-router";
 import {useUserStore} from "@/stores/user.js";
+import Voice from "@/views/create/character/components/Voice.vue";
 
 const router = useRouter();
 const user = useUserStore()
@@ -16,10 +17,27 @@ const nameref = useTemplateRef('name-ref')
 const profileref = useTemplateRef('profile-ref')
 const backGroundImageref = useTemplateRef('backGroundImage-ref')
 const errorMessage = ref('')
+const voiceRef = useTemplateRef('voice-ref')
+
+const voices = ref([])
+const curVoiceId = ref(null)
+
+onMounted(async () => {
+  try {
+    const res = await api.get(`api/create/character/voice/get_list/`, {})
+    const data  = res.data
+    if (data.result === 'success') {
+      voices.value = data.voices
+      curVoiceId.value = data.voices[0].id
+    }
+  } catch (err) {
+  }
+})
 
 async function handleCreate() {
   const photo = photoref.value.myPhoto
   const name = nameref.value.myName?.trim()
+  const voice = voiceRef.value.myVoice
   const profile = profileref.value.myProfile?.trim()
   const backgroundImage = backGroundImageref.value.myBackgroundImage
 
@@ -28,7 +46,9 @@ async function handleCreate() {
     errorMessage.value = '头像不能为空'
   }else if (!name) {
     errorMessage.value = '名字不能为空'
-  } else if (!profile) {
+  } else if (!voice) {
+    errorMessage.value = '音色不能为空'
+  }else if (!profile) {
     errorMessage.value = '简介不能为空'
   } else if(!backgroundImage) {
     errorMessage.value = '背景图片不能为空'
@@ -36,6 +56,7 @@ async function handleCreate() {
     const formData = new FormData()
     formData.append('photo', base64ToFile(photo,'photo.png'))
     formData.append('name', name)
+    formData.append('voice_id', voice)
     formData.append('profile', profile)
     formData.append('background_image',base64ToFile(backgroundImage,'background_image.png'))
 
@@ -67,6 +88,7 @@ async function handleCreate() {
         <h3 class = "text-lg font-bold my-4">创建角色</h3>
         <Photo ref = "photo-ref" />
         <Name ref = "name-ref" />
+        <Voice ref = "voice-ref" :voices="voices" :curVoiceId = "curVoiceId"/>
         <Profile ref = "profile-ref" />
         <BackGroundImage ref = "backGroundImage-ref" />
 

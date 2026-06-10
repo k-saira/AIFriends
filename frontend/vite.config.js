@@ -21,6 +21,7 @@ export default defineConfig({
   server: {
     https: false
   },
+  base: '/static/frontend/',
   build: {
     outDir: path.resolve(__dirname, '../backend/static/frontend'), // 打包到 Django static
     emptyOutDir: true,
