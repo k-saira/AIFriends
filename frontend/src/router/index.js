@@ -11,7 +11,7 @@ import {useUserStore} from "@/stores/user.js";
 import UpdateCharater from "@/views/create/character/UpdateCharater.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory('/'),
   routes: [
     {
       path: '/',
