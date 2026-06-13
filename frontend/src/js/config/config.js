@@ -1,17 +1,12 @@
-const platform = 'vue'  //vue、django、cloud
 const CONFIG_API = {
-    HTTP_URL:'',
+    HTTP_URL: '',
     VAD_URL: '',
-
 }
 
-if (platform === 'vue') {
+if (import.meta.env.DEV) {
     CONFIG_API.HTTP_URL = 'http://127.0.0.1:8000'
-    CONFIG_API.VAD_URL = 'http://localhost:5173/vad/'
-}else if (platform === 'django') {
-    CONFIG_API.HTTP_URL = 'http://127.0.0.1:8000'
-    CONFIG_API.VAD_URL = 'http://127.0.0.1:8000/static/frontend/vad/'
-}else if (platform === 'cloud') {
+    CONFIG_API.VAD_URL = window.location.origin + import.meta.env.BASE_URL + 'vad/'
+} else {
     CONFIG_API.HTTP_URL = 'https://app8073.acapp.acwing.com.cn'
     CONFIG_API.VAD_URL = 'https://app8073.acapp.acwing.com.cn/static/frontend/vad/'
 }

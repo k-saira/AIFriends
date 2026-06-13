@@ -34,10 +34,13 @@ class UpdateCharacterView(APIView):
                 remove_old_photo(character.background_image)
                 character.background_image = background_image
 
+            enable_voice_output = request.data.get('enable_voice_output', 'false').lower() == 'true'
+
             voice = Voice.objects.get(id=voice_id)
             character.name = name
             character.voice = voice
             character.profile = profile
+            character.enable_voice_output = enable_voice_output
             character.update_time = now()
             character.save()
             return Response({

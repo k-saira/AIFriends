@@ -35,6 +35,8 @@ class CreateCharacterView(APIView):
                     'result': '聊天背景不能为空'
                 })
 
+            enable_voice_output = request.data.get('enable_voice_output', 'false').lower() == 'true'
+
             voice = Voice.objects.get(id=voice_id)
 
             Character.objects.create(
@@ -44,6 +46,7 @@ class CreateCharacterView(APIView):
                 profile=profile,
                 photo=photo,
                 background_image=background_image,
+                enable_voice_output=enable_voice_output,
             )
             return Response({
                 'result': 'success',

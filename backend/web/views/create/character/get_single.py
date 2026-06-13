@@ -26,7 +26,8 @@ class GetSingleCharacterView(APIView):
                     'profile': character.profile,
                     'photo': character.photo.url,
                     'background_image': character.background_image.url,
-                    'voice_id': character.voice.id
+                    'voice_id': character.voice.id,
+                    'enable_voice_output': character.enable_voice_output,
                 },
                 'voices': voices,
 

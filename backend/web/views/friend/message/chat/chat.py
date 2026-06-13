@@ -172,9 +172,28 @@ class MessageChatView(APIView):
             mq.put_nowait(None)
 
 
+    async def text_only_stream(self, app, inputs, mq):
+        async for msg, metadata in app.astream(inputs, stream_mode="messages"):
+            if isinstance(msg, BaseMessageChunk):
+                if msg.content:
+                    mq.put_nowait({'content': msg.content})
+                if hasattr(msg, 'usage_metadata') and msg.usage_metadata:
+                    mq.put_nowait({'usage': msg.usage_metadata})
+        mq.put_nowait(None)
+
+    def work_text_only(self, app, inputs, mq):
+        try:
+            asyncio.run(self.text_only_stream(app, inputs, mq))
+        finally:
+            mq.put_nowait(None)
+
     def event_stream(self, app, inputs, friend, message):
         mq = Queue()
-        thread = threading.Thread(target=self.work, args=(app, inputs, mq, friend.character.voice.voice_id))
+        enable_voice = friend.character.enable_voice_output
+        if enable_voice:
+            thread = threading.Thread(target=self.work, args=(app, inputs, mq, friend.character.voice.voice_id))
+        else:
+            thread = threading.Thread(target=self.work_text_only, args=(app, inputs, mq))
         thread.start()
 
         full_output = ''

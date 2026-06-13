@@ -32,6 +32,7 @@ class Character(models.Model):
     voice = models.ForeignKey(Voice, default=None, on_delete=models.CASCADE, blank=True, null=True)
     profile = models.TextField(max_length=100000)
     background_image = models.ImageField(upload_to=background_image_upload_to)
+    enable_voice_output = models.BooleanField(default=False)
     create_time = models.DateTimeField(default=now)
     update_time = models.DateTimeField(default=now)
 

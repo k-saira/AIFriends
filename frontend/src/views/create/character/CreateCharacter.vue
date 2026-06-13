@@ -9,6 +9,7 @@ import api from "@/js/http/api.js";
 import {useRouter} from "vue-router";
 import {useUserStore} from "@/stores/user.js";
 import Voice from "@/views/create/character/components/Voice.vue";
+import ToggleVoiceOutput from "@/views/create/character/components/ToggleVoiceOutput.vue";
 
 const router = useRouter();
 const user = useUserStore()
@@ -18,6 +19,7 @@ const profileref = useTemplateRef('profile-ref')
 const backGroundImageref = useTemplateRef('backGroundImage-ref')
 const errorMessage = ref('')
 const voiceRef = useTemplateRef('voice-ref')
+const toggleVoiceOutputRef = useTemplateRef('toggle-voice-output-ref')
 
 const voices = ref([])
 const curVoiceId = ref(null)
@@ -38,6 +40,7 @@ async function handleCreate() {
   const photo = photoref.value.myPhoto
   const name = nameref.value.myName?.trim()
   const voice = voiceRef.value.myVoice
+  const enableVoiceOutput = toggleVoiceOutputRef.value.isEnabled
   const profile = profileref.value.myProfile?.trim()
   const backgroundImage = backGroundImageref.value.myBackgroundImage
 
@@ -57,6 +60,7 @@ async function handleCreate() {
     formData.append('photo', base64ToFile(photo,'photo.png'))
     formData.append('name', name)
     formData.append('voice_id', voice)
+    formData.append('enable_voice_output', enableVoiceOutput)
     formData.append('profile', profile)
     formData.append('background_image',base64ToFile(backgroundImage,'background_image.png'))
 
@@ -89,6 +93,7 @@ async function handleCreate() {
         <Photo ref = "photo-ref" />
         <Name ref = "name-ref" />
         <Voice ref = "voice-ref" :voices="voices" :curVoiceId = "curVoiceId"/>
+        <ToggleVoiceOutput ref = "toggle-voice-output-ref" />
         <Profile ref = "profile-ref" />
         <BackGroundImage ref = "backGroundImage-ref" />
 
